@@ -1,22 +1,20 @@
-<template name="hex">
-fdg
-	<ul id="categories" class="clr">
+<template name="Map">
+	<ul oncontextmenu="return false;" id="map">
 		{{#each hexagon in hexs}}
-			
 			{{#let y=@index}}
 				{{#each hexagon}}
-					<li class="{{firstrow(y)}} {{evenfirst @index y}}">
+					<li class="hexli {{firstrow(y)}} {{evenfirst @index y}}">
 						<div id="{{@index}}-{{y}}" class="hex {{#if unit}}unit{{/if}}" style="{{#if unit}}cursor: pointer{{/if}}; background-color:{{color}};"><br>
 							{{@index}}, {{y}}<br>
 							
 							{{#if unit}}
+								<strong style="color:black; margin-left: -24px;">{{unit.name}}</strong><br>
 								<strong style="color:black; margin-left: -20px;">HP:{{unit.health}}</strong>
 							{{/if}}
 						</div>
 					</li>
 				{{/each}}
 			{{/let}}
-			
 			<div class="spacer"></div>
 		{{/each}}
 	</ul>

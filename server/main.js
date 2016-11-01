@@ -1,3 +1,4 @@
+import '../imports/api/units.js';
 import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {

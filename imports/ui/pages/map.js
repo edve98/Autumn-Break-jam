@@ -1,144 +1,74 @@
 import { Template } from 'meteor/templating';
-import { Units } from '../api/units.js';
+import { Units } from '/imports/api/units.js';
+
+/*console.log("\\/");
+console.log(Units.find({}));
+console.log("/\\");*/
 
 import './map.html';
 
-Template.hex.helpers({
+/*Template.Map.helpers({
+	hasUnit: function(){
+		return "Yeah!";
+	},
+});*/
+
+Template.Map.onCreated(function bodyOnCreated() {
+  this.state = new ReactiveDict();
+  Meteor.subscribe('units');
+});
+
+Template.Map.helpers({
 	hasUnit: function(){
 		
 	},
 	hexs(){
+		var xlen = 6;
+		var ylen = 6;
+		var color = 'green';
+		hexs = [];
 		
-		hexs = [
-			[
-				{ // 0, 0
-					color: 'green',
-				},
-				{ // 1, 0
-					color: 'green',
-				},
-				{ // 2, 0
-					color: 'green',
-				},
-				{ // 3, 0
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-			],
-			[
-				{ // 0, 0
-					color: 'green',
-				},
-				{ // 1, 0
-					color: 'green',
-				},
-				{ // 2, 0
-					color: 'green',
-				},
-				{ // 3, 0
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-			],
-			[
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-			],
-			[
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-			],
-			[
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-				{
-					color: 'green',
-				},
-			],
-		]
+		for(var i=0; i<ylen; i++){
+			hexs[i] = [];
+			for(var u=0; u<xlen; u++){
+				hexs[i][u] = {};
+				hexs[i][u].color = color;
+			}
+		}
+		
 		
 		var coords, x, y;
 		var units = Units.find({});
-		console.log(units.name);
+		var foundhex = true;
 		
 		units.forEach(function(element){
-			console.log(element.coords);
+			foundhex = true;
 			xy = element.coords;
 			coords = xy.split("-");
 			
 			x = parseInt(coords[0]);
 			y = parseInt(coords[1]);
 			
-			unit = {
-				coords: xy,
-				name: element.name,
-				health: element.health,
-				damage: element.damage,
-			};
+			if(typeof hexs[y] != 'undefined'){ // Hex y not found
+				if(typeof hexs[y][x] != 'undefined'){ // Hex x not found
+					unit = {
+						coords: xy,
+						name: element.name,
+						health: element.health,
+						damage: element.damage,
+					};
+					hexs[y][x].unit = unit;
+				}else{
+					foundhex = false;
+				}
+			}else{
+				foundhex = false;
+			}
 			
-			hexs[y][x].unit = unit;
-			
-			console.log(hexs[y][x]);
-			
+			if(!foundhex){
+				console.log("*Alert: unit " + xy + " hex not found!");
+			}
 		});
-		
-		console.log(hexs[0]);
-		
 		
 		return hexs;
 	},
@@ -155,8 +85,9 @@ Template.hex.helpers({
 });
 
 
-Template.hex.events({
-	'click .hex'(){
+Template.Map.events({
+	'click .hex'(event){
+		//if (event.button == 2) { // Right button clicked
 		// Unit movement
 		var moveid = event.target.id;
 		var unitid;
@@ -165,6 +96,7 @@ Template.hex.events({
 			unitid = $(".active-hex").attr("id");
 			Meteor.call('unit.move', unitid, moveid);
 		}
+		//}
 		
 		// Resets hexs
 		$(".hex").removeClass("active-hex");
@@ -173,6 +105,7 @@ Template.hex.events({
 		
 	},
 	'click .unit'(event){ // Unit select
+		//if (event.button == 2) { // Right button clicked
 		var id = event.target.id;
 		console.log(event.target);
 		
@@ -198,5 +131,6 @@ Template.hex.events({
 				$("#" + xs[i] + "-" + ys[i]).addClass("move-hex");
 			}
 		}
+        //}
 	},
 });
