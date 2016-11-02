@@ -18,7 +18,7 @@
 						<li class="{{#if countryActive}}active{{/if}}"><a href="/country"><span class="glyphicon glyphicon-home"></span> Country</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="#" class="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>
@@ -26,7 +26,15 @@
 	{{/if}}
 	
 	<div class="container" style="padding-top: 75px">
-		{{>Template.dynamic template=content}}
+		{{#if authInProgress}}
+			{{> Loading}}
+		{{else}}
+			{{#if currentUser}}
+				{{>Template.dynamic template=content}}
+			{{else}}
+				{{> Login}}
+			{{/if}}
+		{{/if}}
 	</div>
 	
 </template>

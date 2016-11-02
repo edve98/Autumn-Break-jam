@@ -12,7 +12,6 @@ Template.Login.events({
 		var passwordVar = event.target.loginPassword.value;
 		
 		Meteor.loginWithPassword(emailVar, passwordVar);
-		FlowRouter.go('/');
 	},
 	'submit .register': function(event) {
 		event.preventDefault();
@@ -23,6 +22,5 @@ Template.Login.events({
 			email: emailVar,
 			password: passwordVar
 		});
-		FlowRouter.go('/');
 	}
 });
