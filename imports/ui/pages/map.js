@@ -7,13 +7,10 @@ Template.Map.rendered = function () {
 	var window_height = parseInt($(window).height());
 	$(".map_container").css( "height", window_height - map_container_topmargin );
 	
-	
-	
 	$(window).resize(function() {
 		map_container_topmargin = parseInt($(".map_container").css('margin-top'));
 		window_height = parseInt($(window).height());
 		$(".map_container").css( "height", window_height - map_container_topmargin );
-		console.log(window_height - map_container_topmargin);
 	});
 	
 	var interval = ['?', -1, -1, -1, -1];
@@ -22,38 +19,32 @@ Template.Map.rendered = function () {
 	function move(dir){
 		switch(dir){
 			case 1:
-				var direction = 1;
+				var direction = -1;
 				var to = 'top';
-				var limit = -1*($("#map").height()-$(".map_container").height());
 				break;
 			case 2:
-				var direction = -1;
-				var to = 'left';
-				var limit = -1*($("#map").width()-$(".map_container").width());
-				break;
-			case 3:
-				var direction = -1;
-				var to = 'top';
-				var limit = -1*($("#map").height()-$(".map_container").height());
-				break;
-			case 4:
 				var direction = 1;
 				var to = 'left';
-				var limit = -1*($("#map").width()-$(".map_container").width());
+				break;
+			case 3:
+				var direction = 1;
+				var to = 'top';
+				break;
+			case 4:
+				var direction = -1;
+				var to = 'left';
 				break;
 		}
 		
 		var speed = direction*orgspeed;
 		if(interval[dir] == -1){
 			interval[dir] = setInterval(function(){
-				var val = parseInt($("#map").css(to));
-				
-				if(val+speed <= 0 && val+speed >= limit){
-					$("#map").css(to, val+speed);
-				}else if(val+speed < limit){
-					$("#map").css(to, val - (val - limit));
-				}else if(val+speed > 0){
-					$("#map").css(to, val - val);
+				if(to == 'top'){
+					var val = $(".map_container").scrollTop();
+					$(".map_container").scrollTop(val+speed);
+				}else if(to == 'left'){
+					var val = $(".map_container").scrollLeft();
+					$(".map_container").scrollLeft(val+speed);
 				}
 			}, 1);
 		}
@@ -66,64 +57,66 @@ Template.Map.rendered = function () {
 			interval[dir] = -1;
 		}
 	}
-
-	$('body').keydown(function (e){
-		switch(e.keyCode) {
-			case 37:
-				move(4);
-				break;
-			case 38:
-				move(1);
-				break;
-			case 39:
-				move(2);
-				break;
-			case 40:
-				move(3);
-				break;
-			case 65:
-				move(4);
-				break;
-			case 87:
-				move(1);
-				break;
-			case 68:
-				move(2);
-				break;
-			case 83:
-				move(3);
-				break;
-		}
-	});
-	$('body').keyup(function (e){
-		switch(e.keyCode) {
-			case 37:
-				clear(4);
-				break;
-			case 38:
-				clear(1);
-				break;
-			case 39:
-				clear(2);
-				break;
-			case 40:
-				clear(3);
-				break;
-			case 65:
-				clear(4);
-				break;
-			case 87:
-				clear(1);
-				break;
-			case 68:
-				clear(2);
-				break;
-			case 83:
-				clear(3);
-				break;
-		}
-	});
 	
+	$(window).unbind('keydown');
+	$(window).unbind('keyup');
+	
+	$(window).keydown(function (e){
+		switch(e.keyCode) {
+			case 37:
+				move(4);
+				break;
+			case 38:
+				move(1);
+				break;
+			case 39:
+				move(2);
+				break;
+			case 40:
+				move(3);
+				break;
+			case 65:
+				move(4);
+				break;
+			case 87:
+				move(1);
+				break;
+			case 68:
+				move(2);
+				break;
+			case 83:
+				move(3);
+				break;
+		}
+	});
+	$(window).keyup(function (e){
+		switch(e.keyCode) {
+			case 37:
+				clear(4);
+				break;
+			case 38:
+				clear(1);
+				break;
+			case 39:
+				clear(2);
+				break;
+			case 40:
+				clear(3);
+				break;
+			case 65:
+				clear(4);
+				break;
+			case 87:
+				clear(1);
+				break;
+			case 68:
+				clear(2);
+				break;
+			case 83:
+				clear(3);
+				break;
+		}
+	});
 	
 	$("#left").bind("touchstart", function(){
 		move(4);
@@ -199,7 +192,10 @@ Template.Map.onCreated(function bodyOnCreated() {
 Template.Map.helpers({
 	hexs(){
 		var xlen = 30;
-		var ylen = 20;
+		var ylen = 25;
+		
+		$("#map").css("width", ($("#map .hexli").width() * xlen) + (parseInt($("#map .hexli").css("margin-right")) * xlen +2) + parseInt($("#map .hexli.even-first").css("margin-left")));
+		
 		//var color = 'radial-gradient(#4bef4b, #1daf1d)';
 		hexs = [];
 		
@@ -303,3 +299,32 @@ Template.Map.events({
 		}
 	},
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
