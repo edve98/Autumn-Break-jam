@@ -17,10 +17,12 @@ Template.Login.events({
 		event.preventDefault();
 		var emailVar = event.target.registerEmail.value;
 		var passwordVar = event.target.registerPassword.value;
+		var passwordRepeatVar = event.target.registerPasswordRepeat.value;
+		var nameVar = event.target.registerCountryName.value;
+		var colorVar = event.target.registerCountryColor.value;
+		if (passwordVar != passwordRepeatVar) return;
 		
-		Accounts.createUser({
-			email: emailVar,
-			password: passwordVar
-		});
+		Meteor.call('user.register', emailVar, passwordVar, nameVar, colorVar);
+		Meteor.loginWithPassword(emailVar, passwordVar);
 	}
 });
