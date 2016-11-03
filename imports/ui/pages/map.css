@@ -1,7 +1,73 @@
 
+body{
+	height: 100%;
+}
+
+.map_container{
+	position: relative;
+	margin-top: 50px;
+	width: 100%;
+	/*height: 745px;*/
+	overflow: hidden;
+}
+
 #map{
 	/*display: none;*/
+	position: absolute;
+	width: 3202.9px;
+	/*background-color: lightblue;*/
+	left: 0;
+	top: 0;
 }
+
+.map_container .controller{
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+
+.map_container .controller > div{
+	position: absolute;
+	font-size: 36px;
+	background-color: #FFF;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+	cursor: pointer;
+    line-height: 33px;
+    padding: 0px 0px 8px 5px;
+	
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Chrome/Safari/Opera */
+	-khtml-user-select: none; /* Konqueror */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+.map_container .controller > div:active{
+	background-color: lightgray;
+	border-color: #FFF;
+}
+.map_container .controller #left{
+	left: 0px;
+	bottom: 0px;
+}
+.map_container .controller #down{
+	left: 45px;
+	bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.map_container .controller #right{
+	left: 87px;
+	bottom: 0px;
+}
+.map_container .controller #up{
+	left: 45px;
+	bottom: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 
 ul{
 	margin: 0px;
@@ -12,31 +78,46 @@ ul{
     pointer-events: none;
 }
 
+.unit {
+    background: #4fbb19 !important;
+    background: radial-gradient(#4fbb19, #3b8025) !important;
+}
 .unit:hover {
-    background-color: lime !important;
+    background: #77d049 !important;
+    background: radial-gradient(#77d049, #3f8828) !important;
 }
 
 .active-hex{
-	background-color: cyan !important;
+	background: #3da5bd !important;
+    /*background: radial-gradient(#77d049, #3f8828) !important;*/
+    background: radial-gradient(#3da5bd, #099cbd) !important;
 }
 .active-hex:hover{
-	background-color: cyan !important;
+	background: #3da5bd !important;
+    /*background: radial-gradient(#77d049, #3f8828) !important;*/
+    background: radial-gradient(#3da5bd, #099cbd) !important;
 }
 
 .move-hex{
-	background-color: cyan !important;
+	background: #67b53f !important;
 	cursor: pointer;
+    /*background: radial-gradient(#67b53f, #45942d) !important;*/
+    background: radial-gradient(#78c6d8, #36a7c1) !important;
 }
 .move-hex:hover{
-	background-color: rgb(0, 255, 170) !important;
+	background: #35ff60 !important;
+    /*background: radial-gradient(#35ff60, #30bb74) !important;*/
+    background: radial-gradient(#86dbef, #47c9e6) !important;
 }
 
 .abletofight-hex{
-	background-color: red !important;
+	background: #ad5353 !important;
+    background: radial-gradient(#ad5353, #884040) !important;
 	cursor: pointer;
 }
 .abletofight-hex:hover{
-	background-color: #984545 !important;
+	background: #cc6161 !important;
+    background: radial-gradient(#cc6161, #984545) !important;
 }
 
 .spacer{
@@ -49,8 +130,10 @@ ul{
 #map .hexli{
   position:relative;
   list-style-type:none;
-  width: 13.928571486%;
-  padding-bottom: 16.0838007258%;
+  width: 100px;
+  padding-bottom: 115.4734411085px;
+  /*width: 13.928571486vw;
+  padding-bottom: 16.0838007258vw;*/
   /*width:27.85714285714286%;*/ /* = (100-2.5) / 3.5 */
   /*padding-bottom: 32.16760145166612%;*/ /* =  width /0.866 */
   float:left;
@@ -67,6 +150,9 @@ ul{
   visibility:visible;
 }
 #map .hexli > .hex{
+	background: #4F8D2F;
+	background: radial-gradient(#4F8D2F, #3A7C25);
+	
   width:100%;
   height:100%;
   text-align:center;
@@ -79,16 +165,18 @@ ul{
   
 	-webkit-backface-visibility:hidden;
   
-  background-color: black;
 }
 #map .hexli{
-  margin: 0 1% 0 0%;
-  margin-top: -3%;
+  margin: 0 5px 0 0;
+  /*margin: 0 1vw 0 0;*/
+  margin-top: -24px;
+  /*margin-top: -3vw;*/
 }
 #map .hexli.first-row{
   margin-top: 0%;
 }
 #map .hexli.even-first{
-    margin-left: 7.32%;
+    margin-left: 52.9px;
+    /*margin-left: 7.32vw;*/
 }
 

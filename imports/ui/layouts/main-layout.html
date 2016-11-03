@@ -25,16 +25,14 @@
 		</nav>
 	{{/if}}
 	
-	<div class="container" style="padding-top: 75px">
-		{{#if authInProgress}}
-			{{> Loading}}
+	{{#if authInProgress}}
+		{{> Loading}}
+	{{else}}
+		{{#if currentUser}}
+			{{>Template.dynamic template=content}}
 		{{else}}
-			{{#if currentUser}}
-				{{>Template.dynamic template=content}}
-			{{else}}
-				{{> Login}}
-			{{/if}}
+			{{> Login}}
 		{{/if}}
-	</div>
+	{{/if}}
 	
 </template>
