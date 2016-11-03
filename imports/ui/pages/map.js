@@ -1,38 +1,213 @@
 import { Template } from 'meteor/templating';
 import { Units } from '/imports/api/units.js';
-
-/*console.log("\\/");
-console.log(Units.find({}));
-console.log("/\\");*/
-
 import './map.html';
 
-/*Template.Map.helpers({
-	hasUnit: function(){
-		return "Yeah!";
-	},
-});*/
+Template.Map.rendered = function () {
+	var map_container_topmargin = parseInt($(".map_container").css('margin-top'));
+	var window_height = parseInt($(window).height());
+	$(".map_container").css( "height", window_height - map_container_topmargin );
+	
+	
+	
+	$(window).resize(function() {
+		map_container_topmargin = parseInt($(".map_container").css('margin-top'));
+		window_height = parseInt($(window).height());
+		$(".map_container").css( "height", window_height - map_container_topmargin );
+		console.log(window_height - map_container_topmargin);
+	});
+	
+	var interval = ['?', -1, -1, -1, -1];
+	var orgspeed = 15;
+	
+	function move(dir){
+		switch(dir){
+			case 1:
+				var direction = 1;
+				var to = 'top';
+				var limit = -1*($("#map").height()-$(".map_container").height());
+				break;
+			case 2:
+				var direction = -1;
+				var to = 'left';
+				var limit = -1*($("#map").width()-$(".map_container").width());
+				break;
+			case 3:
+				var direction = -1;
+				var to = 'top';
+				var limit = -1*($("#map").height()-$(".map_container").height());
+				break;
+			case 4:
+				var direction = 1;
+				var to = 'left';
+				var limit = -1*($("#map").width()-$(".map_container").width());
+				break;
+		}
+		
+		var speed = direction*orgspeed;
+		if(interval[dir] == -1){
+			interval[dir] = setInterval(function(){
+				var val = parseInt($("#map").css(to));
+				
+				if(val+speed <= 0 && val+speed >= limit){
+					$("#map").css(to, val+speed);
+				}else if(val+speed < limit){
+					$("#map").css(to, val - (val - limit));
+				}else if(val+speed > 0){
+					$("#map").css(to, val - val);
+				}
+			}, 1);
+		}
+		
+	}
+	
+	function clear(dir){
+		if(interval[dir] != -1){
+			clearInterval(interval[dir]);
+			interval[dir] = -1;
+		}
+	}
 
+	$('body').keydown(function (e){
+		switch(e.keyCode) {
+			case 37:
+				move(4);
+				break;
+			case 38:
+				move(1);
+				break;
+			case 39:
+				move(2);
+				break;
+			case 40:
+				move(3);
+				break;
+			case 65:
+				move(4);
+				break;
+			case 87:
+				move(1);
+				break;
+			case 68:
+				move(2);
+				break;
+			case 83:
+				move(3);
+				break;
+		}
+	});
+	$('body').keyup(function (e){
+		switch(e.keyCode) {
+			case 37:
+				clear(4);
+				break;
+			case 38:
+				clear(1);
+				break;
+			case 39:
+				clear(2);
+				break;
+			case 40:
+				clear(3);
+				break;
+			case 65:
+				clear(4);
+				break;
+			case 87:
+				clear(1);
+				break;
+			case 68:
+				clear(2);
+				break;
+			case 83:
+				clear(3);
+				break;
+		}
+	});
+	
+	
+	$("#left").bind("touchstart", function(){
+		move(4);
+	});
+	$("#right").bind("touchstart", function(){
+		move(2);
+	});
+	$("#up").bind("touchstart", function(){
+		move(1);
+	});
+	$("#down").bind("touchstart", function(){
+		move(3);
+	});
+	
+	$("#left").bind("touchend", function(){
+		clear(4);
+	});
+	$("#right").bind("touchend", function(){
+		clear(2);
+	});
+	$("#up").bind("touchend", function(){
+		clear(1);
+	});
+	$("#down").bind("touchend", function(){
+		clear(3);
+	});
+	
+	$("#left").mousedown(function(){
+		move(4);
+	});
+	$("#right").mousedown(function(){
+		move(2);
+	});
+	$("#up").mousedown(function(){
+		move(1);
+	});
+	$("#down").mousedown(function(){
+		move(3);
+	});
+	
+	$("#left").mouseup(function(){
+		clear(4);
+	});
+	$("#right").mouseup(function(){
+		clear(2);
+	});
+	$("#left").mouseout(function(){
+		clear(4);
+	});
+	$("#right").mouseout(function(){
+		clear(2);
+	});
+	$("#up").mouseup(function(){
+		clear(1);
+	});
+	$("#down").mouseup(function(){
+		clear(3);
+	});
+	$("#up").mouseout(function(){
+		clear(1);
+	});
+	$("#down").mouseout(function(){
+		clear(3);
+	});
+};
+  
 Template.Map.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   Meteor.subscribe('units');
+  
 });
 
 Template.Map.helpers({
-	hasUnit: function(){
-		
-	},
 	hexs(){
-		var xlen = 6;
-		var ylen = 6;
-		var color = 'green';
+		var xlen = 30;
+		var ylen = 20;
+		//var color = 'radial-gradient(#4bef4b, #1daf1d)';
 		hexs = [];
 		
 		for(var i=0; i<ylen; i++){
 			hexs[i] = [];
 			for(var u=0; u<xlen; u++){
 				hexs[i][u] = {};
-				hexs[i][u].color = color;
+				//hexs[i][u].color = color;
 			}
 		}
 		
@@ -87,7 +262,6 @@ Template.Map.helpers({
 
 Template.Map.events({
 	'click .hex'(event){
-		//if (event.button == 2) { // Right button clicked
 		// Unit movement
 		var moveid = event.target.id;
 		var unitid;
@@ -96,7 +270,6 @@ Template.Map.events({
 			unitid = $(".active-hex").attr("id");
 			Meteor.call('unit.move', unitid, moveid);
 		}
-		//}
 		
 		// Resets hexs
 		$(".hex").removeClass("active-hex");
@@ -105,11 +278,8 @@ Template.Map.events({
 		
 	},
 	'click .unit'(event){ // Unit select
-		//if (event.button == 2) { // Right button clicked
 		var id = event.target.id;
-		console.log(event.target);
 		
-		console.log("#" + id);
 		$("#" + id).addClass("active-hex");
 		
 		var coords = id.split("-");
@@ -131,6 +301,5 @@ Template.Map.events({
 				$("#" + xs[i] + "-" + ys[i]).addClass("move-hex");
 			}
 		}
-        //}
 	},
 });
