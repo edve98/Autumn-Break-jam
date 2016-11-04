@@ -2,15 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import './main-layout.html'
+import './main-layout.html';
+import '../pages/login.js';
+import '../components/loading.js';
 
-
-Template.Main_layout.onRendered(function Main_layoutOnCreated() {
-	FlowRouter.watchPathChange();
-	if (!Meteor.user() && FlowRouter.current().path != '/login') {
-		//FlowRouter.go('/login');
-	}
-});
 
 Template.Main_layout.helpers({
 	mapActive() {
@@ -24,5 +19,14 @@ Template.Main_layout.helpers({
 	regionActive() {
 		FlowRouter.watchPathChange();
 		return (FlowRouter.current().path == '/region');
+	},
+	authInProgress() {
+		return Meteor.loggingIn();
+	}
+});
+
+Template.Main_layout.events({
+	'click .logout'() {
+		Meteor.logout();
 	}
 });

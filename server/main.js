@@ -1,9 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Regions } from '../imports/api/regions.js';
 import { Buildings } from '../imports/api/buildings.js';
+import '../imports/api/units.js';
+import '../imports/api/users.js';
 
 Meteor.startup(() => {
-  // code to run on server at startup
+	// code to run on server at startup
 });
 
 Meteor.publish('regions', function() {

@@ -12,17 +12,17 @@ Template.Login.events({
 		var passwordVar = event.target.loginPassword.value;
 		
 		Meteor.loginWithPassword(emailVar, passwordVar);
-		FlowRouter.go('/');
 	},
 	'submit .register': function(event) {
 		event.preventDefault();
 		var emailVar = event.target.registerEmail.value;
 		var passwordVar = event.target.registerPassword.value;
+		var passwordRepeatVar = event.target.registerPasswordRepeat.value;
+		var nameVar = event.target.registerCountryName.value;
+		var colorVar = event.target.registerCountryColor.value;
+		if (passwordVar != passwordRepeatVar) return;
 		
-		Accounts.createUser({
-			email: emailVar,
-			password: passwordVar
-		});
-		FlowRouter.go('/');
+		Meteor.call('user.register', emailVar, passwordVar, nameVar, colorVar);
+		Meteor.loginWithPassword(emailVar, passwordVar);
 	}
 });

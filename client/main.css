@@ -1,1 +1,11 @@
 /* CSS declarations go here */
+
+.circle{
+width:10px;
+height:10px;
+border-radius:5px;
+float:left;
+position: relative;
+left: -2px;
+top: 4px;
+}

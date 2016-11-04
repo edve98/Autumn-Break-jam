@@ -1,20 +1,22 @@
 <template name="Region">
-	<div class="row">
-		<div class="col-md-6"> 
-			{{> Information}} 
-		</div>
-		{{#if none}}
-		{{else}}
-			<div class="col-md-6"> {{> building_control}} </div>
-			{{#if type}}
-			<div class="col-md-6"> {{> army}} </div>
-			{{/if}}
-		{{/if}}
-		{{#if none}}
+	<div class="container" style="padding-top: 75px">
+		<div class="row">
 			<div class="col-md-6"> 
-				{{> type_options}} 
+				{{> Information}} 
 			</div>
-		{{/if}}
+			{{#if none}}
+			{{else}}
+				<div class="col-md-6"> {{> building_control}} </div>
+				{{#if type}}
+				<div class="col-md-6"> {{> army}} </div>
+				{{/if}}
+			{{/if}}
+			{{#if none}}
+				<div class="col-md-6"> 
+					{{> type_options}} 
+				</div>
+			{{/if}}
+		</div>
 	</div>
 </template>
 

@@ -19,15 +19,20 @@
 						<li class="{{#if regionActive}}active{{/if}}"><a href="/region"><span class="glyphicon glyphicon-globe"></span> Region</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="#" class="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	{{/if}}
-	
-	<div class="container" style="padding-top: 75px">
-		{{>Template.dynamic template=content}}
-	</div>
+		{{#if authInProgress}}
+			{{> Loading}}
+	{{else}}
+		{{#if currentUser}}
+			{{>Template.dynamic template=content}}
+		{{else}}
+			{{> Login}}
+		{{/if}}
+	{{/if}}
 	
 </template>
