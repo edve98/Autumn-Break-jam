@@ -1,0 +1,139 @@
+<template name="Region">
+	<div class="row">
+		<div class="col-md-6"> 
+			{{> Information}} 
+		</div>
+		{{#if none}}
+		{{else}}
+			<div class="col-md-6"> {{> building_control}} </div>
+			{{#if type}}
+			<div class="col-md-6"> {{> army}} </div>
+			{{/if}}
+		{{/if}}
+		{{#if none}}
+			<div class="col-md-6"> 
+				{{> type_options}} 
+			</div>
+		{{/if}}
+	</div>
+</template>
+
+<template name="Information">
+	{{#with region}}
+			<table class="table table-bordered table-responsive" style="width:100%; border-radius:25px">
+				<thead bgcolor="#F5F5F5">
+					<tr>
+						<th scope="row" colspan="3" style="text-align:center"> Information </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th style="text-align:center"> Type</th>
+						<td style="text-align:center" colspan="2"> <b> {{type}} </b> </td>
+					</tr>
+					<tr>
+						<th style="width:33.33%;text-align:center">Criteria</th>
+						<th style="width:33.33%;text-align:center"> {{name}} <b> [{{x}}, {{y}}] </b> </th>
+						<th style="width:33.33%;text-align:center"> All </th>
+					</tr>
+					<tr>
+						<th style="text-align:center"> Population </th>
+						<td style="text-align:center"> {{population}} </td>
+						<td style="text-align:center"> {{#with all_data}} {{population_all}} {{/with}} </td>
+					</tr>
+					<tr>
+						<th style="text-align:center"> Local Support</th>
+						<td style="text-align:center"> {{support}}%</td>
+						<td style="text-align:center"> {{#with all_data}} {{support_all}}% {{/with}} </td>
+					</tr>
+					<tr>
+						<th style="text-align:center"> Units</th>
+						<td style="text-align:center"> {{units}}</td>
+						<td style="text-align:center"> {{#with all_data}} {{units_all}} {{/with}} </td>
+					</tr>
+				</tbody>
+			</table>
+	{{/with}}
+</template>
+
+<template name="building_control">
+	<table class="table table-bordered table-responsive" style="width:100%">
+		<thead bgcolor="#F5F5F5">
+			<tr>
+				<th scope="row" colspan="3" style="text-align:center"> Building options </th>
+			</tr>
+		</thead>
+		<tbody>
+			{{> building_options}}
+			{{#each options}} {{>building_options}} {{/each}}	
+		</tbody>
+	</table>
+</template>
+
+<template name="building_options">
+	<tr>
+		<th style="width:33.33%;text-align:center"> Level {{level}} {{name}} </th>
+		<td style="width:33.33%;text-align:center"> {{effect}}</td>
+		<td style="width:33.33%;text-align:center">
+			<form class="building_form">
+				<input name="id" class="hidden" type="hidden" value=" {{id}}">
+				<input class="btn btn-success" type="submit" value="Upgrade ({{gold}})">
+			</form>
+		</td>
+	</tr>
+</template>
+
+<template name="army">
+	<form class="army_summon"> 
+		<table class="table table-bordered table-responsive" style="width:100%">
+			<thead bgcolor="#F5F5F5">
+				<tr>
+					<th scope="row" colspan="3" style="text-align:center"> Army </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th style="width:33.33%;text-align:center"> Population summoned </th>
+					<td style="width:33.33%;text-align:center"> 
+						<input type="number" style="width:30%;text-align:center;vertical-align: middle" name="points" min="0" max="100" step="1" value="21"> in %
+					</td>
+					<td style="width:33.33%;text-align:center">
+						<input name="id" class="hidden" type="hidden" value=" {{id}}"> 
+						<input class="btn btn-success" type="submit" value="Summon"> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</template>
+
+<template name="type_options">
+		<center> 
+			<table class="table table-bordered table-responsive" style="width:100%">
+				<thead  bgcolor="#F5F5F5">
+					<tr>
+						<th scope="row" colspan="3" style="text-align:center"> Assign land type ({{gold}}500g) </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<input name="id" class="hidden" type="hidden" value=" {{id}}"> 
+						<td style="width:50%;text-align:center">
+							<form class="type_form">
+								<input name="id" class="hidden" type="hidden" value="{{id}}">
+								<input name="type" class="hidden" type="hidden" value="city">  
+								<input class="btn btn-success" style="width:50%" type="submit" value="City"> 
+							</form>
+						</td>
+						<td style="width:50%;text-align:center">
+							<form class="type_form">
+								<input name="id" class="hidden" type="hidden" value="{{id}}">
+								<input name="type" class="hidden" type="hidden" value="village">     
+								<input class="btn btn-success" style="width:50%" type="submit" value="Village">
+							</form> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+</template>

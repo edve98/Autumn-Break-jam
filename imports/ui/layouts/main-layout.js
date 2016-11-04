@@ -8,7 +8,7 @@ import './main-layout.html'
 Template.Main_layout.onRendered(function Main_layoutOnCreated() {
 	FlowRouter.watchPathChange();
 	if (!Meteor.user() && FlowRouter.current().path != '/login') {
-		FlowRouter.go('/login');
+		//FlowRouter.go('/login');
 	}
 });
 
@@ -20,5 +20,9 @@ Template.Main_layout.helpers({
 	countryActive() {
 		FlowRouter.watchPathChange();
 		return (FlowRouter.current().path == '/country');
+	},
+	regionActive() {
+		FlowRouter.watchPathChange();
+		return (FlowRouter.current().path == '/region');
 	}
 });

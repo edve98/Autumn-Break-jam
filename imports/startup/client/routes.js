@@ -6,6 +6,7 @@ import '/imports/ui/layouts/main-layout.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/map.js';
 import '/imports/ui/pages/country.js';
+import '/imports/ui/pages/region.js';
 import '/imports/ui/pages/not-found.js';
 
 
@@ -37,6 +38,13 @@ FlowRouter.route('/map', {
 FlowRouter.route('/country', {
 	action: function() {
 		BlazeLayout.render('Main_layout', { content: "Country" });
+	}
+});
+
+FlowRouter.route('/region/:id', {
+	name: "region",
+	action: function(params) {
+		BlazeLayout.render('Main_layout', { content: "Region" });
 	}
 });
 
