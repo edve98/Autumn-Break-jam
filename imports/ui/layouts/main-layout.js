@@ -18,7 +18,7 @@ Template.Main_layout.helpers({
 	},
 	regionActive() {
 		FlowRouter.watchPathChange();
-		return (FlowRouter.current().path == '/region');
+		return (FlowRouter.current().path == '/region/1');
 	},
 	authInProgress() {
 		return Meteor.loggingIn();
